@@ -21,6 +21,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = 'django-insecure-^!fwolljzsjcm3rqg#69kq$cuh4vhqkh9_j^^7er^s=3(ql-7l'
+SECRET_KEY = b"\x05BP\xa4\xd8\x99\x87-\xea\xea7\xd6\xb1'\x06\x12"
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
@@ -29,6 +30,10 @@ ALLOWED_HOSTS = []
 
 
 # Application definition
+REST_FRAMEWORK = {
+    'DEFAULT_AUTHENTICATION_CLASSES': ('knox.auth.TokenAuthentication',),
+}
+
 AUTH_USER_MODEL = "authapp.CustomUser"
 
 INSTALLED_APPS = [
@@ -39,7 +44,9 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'rest_framework',
-        'authapp',
+    'knox',
+
+    'authapp',
     'app',
 ]
 

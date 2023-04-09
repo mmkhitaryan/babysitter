@@ -1,5 +1,14 @@
 asgiref==3.6.0
+cffi==1.15.1
+cryptography==40.0.1
 Django==4.2
+django-rest-knox==4.2.0
 djangorestframework==3.14.0
+ecdsa==0.18.0
+pyasn1==0.4.8
+pycparser==2.21
+python-jose==3.3.0
 pytz==2023.3
+rsa==4.9
+six==1.16.0
 sqlparse==0.4.3

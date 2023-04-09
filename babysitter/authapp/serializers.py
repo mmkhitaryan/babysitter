@@ -1,0 +1,58 @@
+from django.contrib.auth import authenticate
+from django.utils.translation import gettext_lazy as _
+from django.core.exceptions import ObjectDoesNotExist
+
+from rest_framework import serializers
+from .models import CustomUser
+from .sms_auth import create_sms_challenge
+from .sms_auth import validate_challenge_and_return_user
+
+class AuthTokenSerializer(serializers.Serializer):
+    phone = serializers.CharField(
+        label=_("Phone number"),
+        write_only=True,
+        required=False
+    )
+    challenge_token = serializers.CharField(
+        label=_("Challenge token"),
+        required=False
+    )
+    is_registered = serializers.CharField(
+        label=_("Is registered"),
+        read_only=True
+    )
+    token = serializers.CharField(
+        label=_("Token"),
+        read_only=True
+    )
+    sms_code = serializers.CharField(
+        label=_("Sms code"),
+    )
+
+    def validate(self, attrs):
+        phone = attrs.get('phone')
+
+        if not attrs.get('challenge_token'):
+            try:
+                user = CustomUser.objects.get(phone=phone)
+                attrs["challenge_token"]=create_sms_challenge(phone)
+                attrs["is_registered"]=True
+                del attrs["phone"]
+                return attrs
+
+            except ObjectDoesNotExist:
+                attrs["challenge_token"]=create_sms_challenge(phone)
+                attrs["is_registered"]=False
+                del attrs["phone"]
+                return attrs
+
+        challenge_token = attrs.get('challenge_token')
+        sms_code = attrs.get('sms_code')
+        user = validate_challenge_and_return_user(challenge_token, sms_code)
+
+        if not user:
+            msg = _('Invalid sms code.')
+            raise serializers.ValidationError(msg, code='authorization')
+        
+        attrs['user'] = user
+        return attrs
