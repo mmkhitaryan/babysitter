@@ -2,6 +2,7 @@ asgiref==3.6.0
 cffi==1.15.1
 cryptography==40.0.1
 Django==4.2
+django-cors-headers==3.14.0
 django-rest-knox==4.2.0
 djangorestframework==3.14.0
 ecdsa==0.18.0
