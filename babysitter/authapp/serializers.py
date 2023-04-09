@@ -27,6 +27,7 @@ class AuthTokenSerializer(serializers.Serializer):
     )
     sms_code = serializers.CharField(
         label=_("Sms code"),
+        required=False
     )
 
     def validate(self, attrs):
