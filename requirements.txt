@@ -5,6 +5,7 @@ Django==4.2
 django-rest-knox==4.2.0
 djangorestframework==3.14.0
 ecdsa==0.18.0
+gunicorn==20.1.0
 pyasn1==0.4.8
 pycparser==2.21
 python-jose==3.3.0

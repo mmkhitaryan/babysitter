@@ -17,21 +17,12 @@ services:
     build: .
     env_file:
       - ./.env
-    expose:
-      - "8000"
+    ports:
+      - "8081:8000"
     depends_on:
       - postgres
     volumes:
-      - static:/code/static
       - ./:/code
-  nginx:
-    restart: always
-    image: nginx:latest
-    volumes:
-      - ./nginx.conf:/etc/nginx/nginx.conf:ro
-      - static:/usr/share/nginx/html/static:ro
-    ports:
-      - "80:80"
   adminer:
     image: adminer
     restart: always
@@ -41,4 +32,3 @@ services:
       - postgres
 volumes: 
   data:
-  static:
