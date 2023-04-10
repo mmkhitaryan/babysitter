@@ -11,7 +11,7 @@ from app.models import Babysitter, Family
 class CustomUserSerializer(serializers.ModelSerializer):
     class Meta:
         model = CustomUser
-        fields = ['id', 'phone', 'user_type', 'babysitter']
+        fields = ['id', 'phone', 'user_type', 'babysitter', 'family']
         depth = 1
 
 class AuthTokenSerializer(serializers.Serializer):
