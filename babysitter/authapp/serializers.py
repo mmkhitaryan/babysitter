@@ -8,6 +8,11 @@ from .sms_auth import create_sms_challenge
 from .sms_auth import validate_challenge_and_return_user
 from app.models import Babysitter, Family
 
+class CustomUserSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = CustomUser
+        fields = ['id', 'phone', 'user_type']
+
 class AuthTokenSerializer(serializers.Serializer):
     phone = serializers.CharField(
         label=_("Phone number"),
