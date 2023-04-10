@@ -27,6 +27,7 @@ class AuthTokenSerializer(serializers.Serializer):
     account_type = serializers.IntegerField(
         label=_("Is registered"),
         write_only=True,
+        required=False
     )
     is_registered = serializers.CharField(
         label=_("Is registered"),
