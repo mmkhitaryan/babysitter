@@ -52,7 +52,7 @@ class AuthTokenSerializer(serializers.Serializer):
         user = validate_challenge_and_return_user(challenge_token, sms_code)
 
         if not user:
-            msg = _('Invalid sms code.')
+            msg = _('Sms code is invalid or expired.')
             raise serializers.ValidationError(msg, code='authorization')
         
         attrs['user'] = user
