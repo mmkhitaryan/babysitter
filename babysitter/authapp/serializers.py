@@ -70,6 +70,6 @@ class AuthTokenSerializer(serializers.Serializer):
         
         attrs['user'] = user
 
-        Babysitter.objects.create(user=user)
-        Family.objects.create(user=user)
+        Babysitter.objects.get_or_create(user=user)
+        Family.objects.get_or_create(user=user)
         return attrs
