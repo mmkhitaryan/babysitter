@@ -27,11 +27,16 @@ SECRET_KEY = b"\x05BP\xa4\xd8\x99\x87-\xea\xea7\xd6\xb1'\x06\x12"
 DEBUG = True
 
 ALLOWED_HOSTS = []
+from datetime import timedelta
 
 
 # Application definition
 REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': ('knox.auth.TokenAuthentication',),
+}
+
+REST_KNOX = {
+    'TOKEN_TTL': timedelta(days=30),
 }
 
 AUTH_USER_MODEL = "authapp.CustomUser"
