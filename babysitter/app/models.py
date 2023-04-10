@@ -10,7 +10,7 @@ class Babysitter(models.Model):
     years_of_experience = models.IntegerField(default=1)
     bio = models.CharField(max_length=900, default='')
     avability = models.BooleanField(default=False)
-    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='babysitter')
+    user = models.OneToOneField(User, on_delete=models.CASCADE, related_name='babysitter')
 
 class Family(models.Model):
     PAYMENT_METHOD = [
@@ -21,7 +21,7 @@ class Family(models.Model):
     payment_method = models.IntegerField(choices=PAYMENT_METHOD, default=PAYMENT_METHOD[1][0])
     number_of_children = models.IntegerField(default=1)
     special_needs = models.CharField(max_length=500, default='')
-    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='Family')
+    user = models.OneToOneField(User, on_delete=models.CASCADE, related_name='Family')
 
 class BookingTable(models.Model):
     end_date = models.DateField()
