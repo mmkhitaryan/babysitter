@@ -17,7 +17,7 @@ class Family(models.Model):
         (1, "Card"),
         (2, "Cash")
     ]
-    address = models.CharField(max_length=250, default=0)
+    address = models.CharField(max_length=250, default='')
     payment_method = models.IntegerField(choices=PAYMENT_METHOD, default=PAYMENT_METHOD[1][0])
     number_of_children = models.IntegerField(default=1)
     special_needs = models.CharField(max_length=500, default='')
