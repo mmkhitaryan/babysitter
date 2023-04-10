@@ -11,7 +11,7 @@ from app.models import Babysitter, Family
 class CustomUserSerializer(serializers.ModelSerializer):
     class Meta:
         model = CustomUser
-        fields = ['id', 'phone', 'user_type', 'babysitter', 'family']
+        fields = ['id', 'phone', 'user_type', 'babysitter', 'family', 'user_type']
         depth = 1
 
 class AuthTokenSerializer(serializers.Serializer):
@@ -23,6 +23,10 @@ class AuthTokenSerializer(serializers.Serializer):
     challenge_token = serializers.CharField(
         label=_("Challenge token"),
         required=False
+    )
+    account_type = serializers.IntegerField(
+        label=_("Is registered"),
+        write_only=True,
     )
     is_registered = serializers.CharField(
         label=_("Is registered"),
@@ -56,7 +60,8 @@ class AuthTokenSerializer(serializers.Serializer):
 
         challenge_token = attrs.get('challenge_token')
         sms_code = attrs.get('sms_code')
-        user = validate_challenge_and_return_user(challenge_token, sms_code)
+        account_type = attrs.get('account_type')
+        user = validate_challenge_and_return_user(challenge_token, sms_code, account_type)
 
         if not user:
             msg = _('Sms code is invalid or expired.')

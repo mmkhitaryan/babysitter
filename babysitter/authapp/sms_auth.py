@@ -19,7 +19,7 @@ def create_sms_challenge(phone):
         "exipery_date": int(exipery_date)
     }), settings.SECRET_KEY, algorithm='dir', encryption='A128GCM')
 
-def validate_challenge_and_return_user(challenge_token, sms):
+def validate_challenge_and_return_user(challenge_token, sms, account_type):
     decrypted_chal = jwe.decrypt(challenge_token, settings.SECRET_KEY)
     json_loaded = json.loads(decrypted_chal)
 
@@ -28,7 +28,10 @@ def validate_challenge_and_return_user(challenge_token, sms):
 
     if not datetime_expiry_date<datetime_now:
         if json_loaded['sms_code']==sms:
-            return CustomUser.objects.get_or_create(
+            user = CustomUser.objects.get_or_create(
                 phone=json_loaded["phone"]
             )[0]
+            user.user_type = account_type
+            user.save()
+            return user
 
