@@ -6,6 +6,7 @@ from rest_framework import serializers
 from .models import CustomUser
 from .sms_auth import create_sms_challenge
 from .sms_auth import validate_challenge_and_return_user
+from app.models import Babysitter, Family
 
 class AuthTokenSerializer(serializers.Serializer):
     phone = serializers.CharField(
@@ -56,4 +57,7 @@ class AuthTokenSerializer(serializers.Serializer):
             raise serializers.ValidationError(msg, code='authorization')
         
         attrs['user'] = user
+
+        Babysitter.objects.create(user=user)
+        Family.objects.create(user=user)
         return attrs
