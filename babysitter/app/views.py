@@ -8,6 +8,7 @@ from rest_framework.response import Response
 from knox.auth import TokenAuthentication
 from rest_framework.permissions import IsAuthenticated
 from django_filters import rest_framework as filters
+from rest_framework import filters as drffilters
 
 from .serializers import BabysitterSerializer
 from .models import Babysitter
@@ -25,7 +26,9 @@ class BabysitterListView(generics.ListAPIView):
     model = Babysitter
     serializer_class = BabysitterSerializer
     filterset_class  = BabysitterFilterset
-    filter_backends = (filters.DjangoFilterBackend,)
+    filter_backends = (filters.DjangoFilterBackend, drffilters.OrderingFilter)
+    ordering_fields = ('hourly_rate')
+    ordering = ('-hourly_rate')
 
     def get_queryset(self):
         queryset = Babysitter.objects.filter(published=True)

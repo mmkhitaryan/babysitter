@@ -9,7 +9,6 @@ class Babysitter(models.Model):
     hourly_rate = models.IntegerField(default=12)
     years_of_experience = models.IntegerField(default=1)
     bio = models.CharField(max_length=900, default='')
-    avability = models.BooleanField(default=False)
     user = models.OneToOneField(User, on_delete=models.CASCADE, related_name='babysitter')
     published = models.BooleanField(default=False)
 
