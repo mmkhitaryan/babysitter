@@ -27,8 +27,8 @@ class BabysitterListView(generics.ListAPIView):
     serializer_class = BabysitterSerializer
     filterset_class  = BabysitterFilterset
     filter_backends = (filters.DjangoFilterBackend, drffilters.OrderingFilter)
-    ordering_fields = ('hourly_rate')
-    ordering = ('-hourly_rate')
+    ordering_fields = ('hourly_rate',)
+    ordering = ('-hourly_rate',)
 
     def get_queryset(self):
         queryset = Babysitter.objects.filter(published=True)
