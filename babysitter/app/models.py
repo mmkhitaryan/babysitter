@@ -11,7 +11,7 @@ class Babysitter(models.Model):
     bio = models.CharField(max_length=900, default='')
     avability = models.BooleanField(default=False)
     user = models.OneToOneField(User, on_delete=models.CASCADE, related_name='babysitter')
-    has_been_redacted = models.BooleanField(default=False)
+    published = models.BooleanField(default=False)
 
 class Family(models.Model):
     PAYMENT_METHOD = [
@@ -23,7 +23,7 @@ class Family(models.Model):
     number_of_children = models.IntegerField(default=1)
     special_needs = models.CharField(max_length=500, default='')
     user = models.OneToOneField(User, on_delete=models.CASCADE, related_name='family')
-    has_been_redacted = models.BooleanField(default=False)
+    published = models.BooleanField(default=False)
 
 class BookingTable(models.Model):
     end_date = models.DateField()
