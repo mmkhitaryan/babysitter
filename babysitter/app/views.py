@@ -45,7 +45,6 @@ class BabysitterListView(generics.ListAPIView):
     ordering = ('-hourly_rate',)
 
     def get_queryset(self):
-        # TODO: add filtering show only babysitters with no active booking
         queryset = Babysitter.objects.filter(
             Q(bookingtable__end_time__lte=timezone.now()) | ~Q(bookingtable__isnull=False),
             published=True
