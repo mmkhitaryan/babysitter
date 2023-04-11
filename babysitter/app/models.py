@@ -11,6 +11,7 @@ class Babysitter(models.Model):
     bio = models.CharField(max_length=900, default='')
     user = models.OneToOneField(User, on_delete=models.CASCADE, related_name='babysitter')
     published = models.BooleanField(default=False)
+    full_name = models.CharField(max_length=25, default='')
 
 class Family(models.Model):
     PAYMENT_METHOD = [
