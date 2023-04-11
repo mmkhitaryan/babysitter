@@ -28,7 +28,7 @@ class BabysitterListView(generics.ListAPIView):
     filter_backends = (filters.DjangoFilterBackend,)
 
     def get_queryset(self):
-        queryset = queryset.filter(published=True)
+        queryset = Babysitter.objects.filter(published=True)
         return queryset
 
 class RetrieveBabysitter(APIView):
