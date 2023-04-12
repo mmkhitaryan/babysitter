@@ -82,14 +82,22 @@ class BookBabysitterView(APIView):
             end_time__gte=timezone.now()
         ).count()==0
 
+
+        is_family_free_now = user_family.bookingtable.filter(
+            end_time__gte=timezone.now()
+        ).count()==0
+
         hours = int(request.data['hours'])
 
-        if is_babysitter_free_now:
-            b = BookingTable.objects.create(
-                family=user_family,
-                babysitter=babysitter,
-                end_time=timezone.now()+timedelta(hours=hours)
-            )
-            return Response(BookingTableSerializer(b).data, status=status.HTTP_201_CREATED)
-        else:
+        if not is_babysitter_free_now:
             return Response({"error": "babysitter is already booked"}, status=status.HTTP_400_BAD_REQUEST)
+
+        if not is_family_free_now:
+            return Response({"error": "babysitter is already booked"}, status=status.HTTP_409_CONFLICT)
+
+        b = BookingTable.objects.create(
+            family=user_family,
+            babysitter=babysitter,
+            end_time=timezone.now()+timedelta(hours=hours)
+        )
+        return Response(BookingTableSerializer(b).data, status=status.HTTP_201_CREATED)
