@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from .models import Babysitter, BookingTable
+from .models import Babysitter, BookingTable, Family
 
 class BabysitterSerializer(serializers.ModelSerializer):
     class Meta:
@@ -10,3 +10,8 @@ class BookingTableSerializer(serializers.ModelSerializer):
     class Meta:
         model = BookingTable
         fields = ['id','end_time', 'notes', 'family', 'babysitter']
+
+class FamilySerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Family
+        fields = ['id','address', 'payment_method', 'number_of_children', 'special_needs', 'published']

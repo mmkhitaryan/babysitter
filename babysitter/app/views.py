@@ -13,7 +13,7 @@ from django_filters import rest_framework as filters
 from rest_framework import filters as drffilters
 from rest_framework.permissions import BasePermission
 
-from .serializers import BabysitterSerializer, BookingTableSerializer
+from .serializers import BabysitterSerializer, BookingTableSerializer, FamilySerializer
 from .models import Babysitter, BookingTable
 from authapp.models import CustomUser
 from django.db.models import Q
@@ -62,6 +62,22 @@ class RetrieveBabysitterView(APIView):
     def put(self, request, format=None):
         users_babysitter = request.user.babysitter
         serializer = BabysitterSerializer(users_babysitter, data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+class RetrieveFamilyView(APIView):
+    authentication_classes = (TokenAuthentication,)
+    permission_classes = (IsAuthenticated, OnlyForFamily)
+
+    def get(self, request, format=None):
+        usernames = request.user.family
+        return Response(FamilySerializer(usernames).data)
+
+    def put(self, request, format=None):
+        users_babysitter = request.user.family
+        serializer = FamilySerializer(users_babysitter, data=request.data)
         if serializer.is_valid():
             serializer.save()
             return Response(serializer.data, status=status.HTTP_201_CREATED)
