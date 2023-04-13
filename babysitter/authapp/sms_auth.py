@@ -31,7 +31,8 @@ def validate_challenge_and_return_user(challenge_token, sms, account_type):
             user = CustomUser.objects.get_or_create(
                 phone=json_loaded["phone"]
             )[0]
-            user.user_type = account_type
+            if account_type:
+                user.user_type = account_type
             user.save()
             return user
 
