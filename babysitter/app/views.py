@@ -59,6 +59,28 @@ class RetrieveBabysitterByIdView(APIView):
         babysitter = BabysitterSerializer(babysitter)
         return Response(babysitter.data)
 
+class CurrentOrderView(APIView):
+    authentication_classes = (TokenAuthentication,)
+    permission_classes = (IsAuthenticated,)
+
+    def get(self, request, format=None):
+        if request.user.user_type == 1:
+            order = request.user.babysitter
+
+        if request.user.user_type == 2:
+            order = request.user.family
+        
+        last_active_booking = order.bookingtable.filter(
+            end_time__gte=timezone.now()
+        )
+
+        if last_active_booking.count()==0:
+            return Response({"status": "There is no current active bookings on your account"}, status=status.HTTP_200_OK)
+        
+        last_active_booking = last_active_booking[0]
+
+        return Response(BookingTableSerializer(last_active_booking).data)
+
 class RetrieveBabysitterView(APIView):
     authentication_classes = (TokenAuthentication,)
     permission_classes = (IsAuthenticated, OnlyForBabysitter)

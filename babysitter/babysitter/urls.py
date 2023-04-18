@@ -19,7 +19,7 @@ from django.urls import include, path
 
 from authapp.views import LoginView
 from authapp.views import CustomUserView
-from app.views import BabysitterListView, RetrieveBabysitterView, BookBabysitterView, RetrieveFamilyView, RetrieveBabysitterByIdView
+from app.views import BabysitterListView, RetrieveBabysitterView, BookBabysitterView, RetrieveFamilyView, RetrieveBabysitterByIdView, CurrentOrderView
 
 from knox import views as knox_views
 
@@ -34,6 +34,8 @@ urlpatterns = [
      path('babysitter/', RetrieveBabysitterView.as_view(), name='babysitter-self'),
      path('babysitter/<int:pk>', RetrieveBabysitterByIdView.as_view(), name='babysitter-self'),
      path('babysitter/<int:pk>/book', BookBabysitterView.as_view(), name='babysitter-book'),
-    
+
+     path('current_order/', CurrentOrderView.as_view(), name='currentorder-self'),
+
      path('family/', RetrieveFamilyView.as_view(), name='babysitter-self'),
 ]
