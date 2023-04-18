@@ -51,6 +51,14 @@ class BabysitterListView(generics.ListAPIView):
         )
         return queryset
 
+class RetrieveBabysitterByIdView(APIView):
+    authentication_classes = (TokenAuthentication,)
+
+    def get(self, request, pk, format=None):
+        babysitter = Babysitter.objects.get(id=pk)
+        babysitter = BabysitterSerializer(babysitter)
+        return Response(babysitter.data)
+
 class RetrieveBabysitterView(APIView):
     authentication_classes = (TokenAuthentication,)
     permission_classes = (IsAuthenticated, OnlyForBabysitter)
