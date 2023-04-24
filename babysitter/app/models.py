@@ -26,7 +26,8 @@ class Family(models.Model):
     published = models.BooleanField(default=False)
 
 class BookingTable(models.Model):
-    end_time = models.DateTimeField(auto_now=True)
+    end_time = models.DateTimeField()
+    start_time = models.DateTimeField(auto_now=True)
     notes = models.CharField(max_length=500)
     family = models.ForeignKey(Family, on_delete=models.CASCADE, related_name='bookingtable')
     babysitter = models.ForeignKey(Babysitter, on_delete=models.CASCADE, related_name='bookingtable')
