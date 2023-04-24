@@ -9,7 +9,7 @@ class BabysitterSerializer(serializers.ModelSerializer):
 class BookingTableSerializer(serializers.ModelSerializer):
     class Meta:
         model = BookingTable
-        fields = ['id','end_time', 'notes', 'family', 'babysitter']
+        fields = ['id','end_time','end_time', 'notes', 'family', 'babysitter']
         depth = 1
 
 class FamilySerializer(serializers.ModelSerializer):
