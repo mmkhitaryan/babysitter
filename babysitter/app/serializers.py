@@ -15,4 +15,4 @@ class BookingTableSerializer(serializers.ModelSerializer):
 class FamilySerializer(serializers.ModelSerializer):
     class Meta:
         model = Family
-        fields = ['id','address', 'payment_method', 'number_of_children', 'special_needs', 'published']
+        fields = ['id','address', 'payment_method', 'number_of_children', 'special_needs', 'published', 'for_grandparents']

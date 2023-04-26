@@ -33,7 +33,8 @@ class BabysitterFilterset(filters.FilterSet):
         model = Babysitter
         fields = {
             'hourly_rate': ['exact', 'lte', 'gte', 'gt', 'lt'],
-            'years_of_experience': ['exact', 'lte', 'gte', 'gt', 'lt']
+            'years_of_experience': ['exact', 'lte', 'gte', 'gt', 'lt'],
+            'for_grandparents': ['exact']
         }
 
 class BabysitterListView(generics.ListAPIView):
