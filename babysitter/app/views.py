@@ -147,4 +147,7 @@ class BookBabysitterView(APIView):
             babysitter=babysitter,
             end_time=timezone.now()+timedelta(hours=hours)
         )
+
+
+        print(f"{babysitter.full_name}, you have a new booking")
         return Response(BookingTableSerializer(b).data, status=status.HTTP_201_CREATED)
