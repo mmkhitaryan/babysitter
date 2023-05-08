@@ -15,6 +15,7 @@ class Babysitter(models.Model):
     for_grandparents = models.BooleanField(default=False)
     birthday = models.DateField(auto_now_add=True)
     gender = models.BooleanField(default=False)
+    avatar = models.ImageField(upload_to='avatars')
 
 class Family(models.Model):
     PAYMENT_METHOD = [

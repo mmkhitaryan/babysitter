@@ -14,6 +14,8 @@ from rest_framework import filters as drffilters
 from rest_framework.permissions import BasePermission
 
 from .serializers import BabysitterSerializer, BookingTableSerializer, FamilySerializer
+from .serializers import BabysitterAvatarSerializer
+
 from .models import Babysitter, BookingTable
 from authapp.models import CustomUser
 from django.db.models import Q
@@ -37,6 +39,21 @@ class BabysitterFilterset(filters.FilterSet):
             'years_of_experience': ['exact', 'lte', 'gte', 'gt', 'lt'],
             'for_grandparents': ['exact']
         }
+
+class UploadBabysitterAvatarView(APIView):
+    authentication_classes = (TokenAuthentication,)
+    permission_classes = (IsAuthenticated, OnlyForBabysitter)
+
+    def post(self, request, format=None):
+        users_babysitter = request.user.babysitter
+        serializer = BabysitterAvatarSerializer(users_babysitter, data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+
+        users_babysitter.published = False
+        users_babysitter.save()
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 class BabysitterListView(generics.ListAPIView):
     model = Babysitter
