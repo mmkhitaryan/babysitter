@@ -37,5 +37,6 @@ urlpatterns = [
 
      path('current_order/', CurrentOrderView.as_view(), name='currentorder-self'),
 
+
      path('family/', RetrieveFamilyView.as_view(), name='babysitter-self'),
 ]
