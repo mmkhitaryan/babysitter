@@ -4,7 +4,7 @@ from .models import Babysitter, BookingTable, Family
 class BabysitterSerializer(serializers.ModelSerializer):
     class Meta:
         model = Babysitter
-        fields = ['id', 'hourly_rate', 'years_of_experience', 'bio', 'published', 'full_name', 'for_grandparents']
+        fields = ['id', 'hourly_rate', 'years_of_experience', 'bio', 'published', 'full_name', 'for_grandparents', 'birthday', 'gender']
         read_only_fields = ('published',)
 
 class BookingTableSerializer(serializers.ModelSerializer):

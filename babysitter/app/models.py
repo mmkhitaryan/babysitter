@@ -13,6 +13,8 @@ class Babysitter(models.Model):
     published = models.BooleanField(default=False)
     full_name = models.CharField(max_length=25, default='')
     for_grandparents = models.BooleanField(default=False)
+    birthday = models.DateField()
+    gender = models.BooleanField(default=False)
 
 class Family(models.Model):
     PAYMENT_METHOD = [

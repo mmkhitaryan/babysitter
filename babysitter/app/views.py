@@ -33,6 +33,7 @@ class BabysitterFilterset(filters.FilterSet):
         model = Babysitter
         fields = {
             'hourly_rate': ['exact', 'lte', 'gte', 'gt', 'lt'],
+            'birthday': ['exact', 'lte', 'gte', 'gt', 'lt'],
             'years_of_experience': ['exact', 'lte', 'gte', 'gt', 'lt'],
             'for_grandparents': ['exact']
         }
@@ -96,6 +97,9 @@ class RetrieveBabysitterView(APIView):
         if serializer.is_valid():
             serializer.save()
             return Response(serializer.data, status=status.HTTP_201_CREATED)
+
+        users_babysitter.published = False
+        users_babysitter.save()
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 class RetrieveFamilyView(APIView):
