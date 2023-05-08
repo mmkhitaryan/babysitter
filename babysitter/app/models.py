@@ -24,7 +24,6 @@ class Family(models.Model):
     number_of_children = models.IntegerField(default=1)
     special_needs = models.CharField(max_length=500, default='')
     user = models.OneToOneField(User, on_delete=models.CASCADE, related_name='family')
-    published = models.BooleanField(default=False)
 
 class BookingTable(models.Model):
     end_time = models.DateTimeField()
