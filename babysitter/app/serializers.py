@@ -5,7 +5,7 @@ from rest_framework.serializers import ImageField
 class BabysitterSerializer(serializers.ModelSerializer):
     class Meta:
         model = Babysitter
-        fields = ['id', 'hourly_rate', 'years_of_experience', 'bio', 'published', 'full_name', 'for_grandparents', 'birthday', 'gender', 'avatar']
+        fields = ['id', 'hourly_rate', 'years_of_experience', 'bio', 'published', 'full_name', 'for_grandparents', 'birthday', 'gender', 'avatar', 'education']
         read_only_fields = ('published', 'avatar')
 
 class BabysitterAvatarSerializer(serializers.ModelSerializer):
