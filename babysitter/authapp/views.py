@@ -29,5 +29,5 @@ class CustomUserView(APIView):
 
     def get(self, request, format=None):
         return Response(
-            CustomUserSerializer(request.user).data
+            CustomUserSerializer(request.user, context={'request': request}).data
         )
