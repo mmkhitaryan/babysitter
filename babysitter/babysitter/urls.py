@@ -22,6 +22,8 @@ from authapp.views import CustomUserView
 from app.views import BabysitterListView, RetrieveBabysitterView, BookBabysitterView, RetrieveFamilyView, RetrieveBabysitterByIdView, CurrentOrderView, UploadBabysitterAvatarView
 
 from knox import views as knox_views
+from django.conf import settings
+from django.conf.urls.static import static
 
 urlpatterns = [
      path('login/', LoginView.as_view(), name='knox_login'),
@@ -40,4 +42,4 @@ urlpatterns = [
 
 
      path('family/', RetrieveFamilyView.as_view(), name='babysitter-self'),
-]
+] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

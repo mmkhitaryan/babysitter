@@ -46,7 +46,7 @@ class UploadBabysitterAvatarView(APIView):
 
     def post(self, request, format=None):
         users_babysitter = request.user.babysitter
-        serializer = BabysitterAvatarSerializer(users_babysitter, data=request.data)
+        serializer = BabysitterAvatarSerializer(users_babysitter, data=request.data, context={'request': request})
         if serializer.is_valid():
             serializer.save()
             return Response(serializer.data, status=status.HTTP_201_CREATED)
