@@ -3,6 +3,7 @@ from .models import Babysitter, BookingTable, Family
 from rest_framework.serializers import ImageField
 
 class BabysitterSerializer(serializers.ModelSerializer):
+    birthday = serializers.DateField()
     class Meta:
         model = Babysitter
         fields = ['id', 'hourly_rate', 'years_of_experience', 'bio', 'published', 'full_name', 'for_grandparents', 'birthday', 'gender', 'avatar', 'education']
