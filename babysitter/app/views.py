@@ -48,11 +48,11 @@ class UploadBabysitterAvatarView(APIView):
         users_babysitter = request.user.babysitter
         serializer = BabysitterAvatarSerializer(users_babysitter, data=request.data, context={'request': request})
         if serializer.is_valid():
+            users_babysitter.published = False
+            users_babysitter.save()
             serializer.save()
             return Response(serializer.data, status=status.HTTP_201_CREATED)
 
-        users_babysitter.published = False
-        users_babysitter.save()
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 class BabysitterListView(generics.ListAPIView):
