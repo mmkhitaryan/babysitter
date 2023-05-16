@@ -75,7 +75,7 @@ class RetrieveBabysitterByIdView(APIView):
 
     def get(self, request, pk, format=None):
         babysitter = Babysitter.objects.get(id=pk)
-        babysitter = BabysitterSerializer(babysitter)
+        babysitter = BabysitterSerializer(babysitter, context={'request': request})
         return Response(babysitter.data)
 
 class CurrentOrderView(APIView):
@@ -118,7 +118,7 @@ class CurrentOrderView(APIView):
         
         last_active_booking = last_active_booking[0]
 
-        return Response(BookingTableSerializer(last_active_booking).data)
+        return Response(BookingTableSerializer(last_active_booking, context={'request': request}).data)
 
 class RetrieveBabysitterView(APIView):
     authentication_classes = (TokenAuthentication,)
@@ -126,7 +126,7 @@ class RetrieveBabysitterView(APIView):
 
     def get(self, request, format=None):
         usernames = request.user.babysitter
-        return Response(BabysitterSerializer(usernames).data)
+        return Response(BabysitterSerializer(usernames, context={'request': request}).data)
 
     def put(self, request, format=None):
         users_babysitter = request.user.babysitter
@@ -191,4 +191,4 @@ class BookBabysitterView(APIView):
 
 
         print(f"{babysitter.full_name}, you have a new booking")
-        return Response(BookingTableSerializer(b).data, status=status.HTTP_201_CREATED)
+        return Response(BookingTableSerializer(b, context={'request': request}).data, status=status.HTTP_201_CREATED)
