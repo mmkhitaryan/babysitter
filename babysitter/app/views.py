@@ -30,23 +30,24 @@ class OnlyForBabysitter(BasePermission):
     def has_permission(self, request, view):
         return request.user.user_type==1
 
-class AgeFilter(filters.Filter):
-    def filter(self, qs, value):
+class AgeFilterBackend(drffilters.BaseFilterBackend):
+    def filter_queryset(self, request, queryset, view):
         from datetime import date
-
         today = date.today()
-        age = today.year - obj.birthday.year
-
-        return qs.filter(**{self.field_name: age})
+        min_age = request.query_params.get('age_min')  # Minimum age
+        max_age = request.query_params.get('age_max')  # Maximum age
+        
+        if min_age:
+            min_birthday = today.replace(year=today.year - int(min_age))
+            queryset = queryset.filter(birthday__lte=min_birthday)
+        
+        if max_age:
+            max_birthday = today.replace(year=today.year - int(max_age) - 1)
+            queryset = queryset.filter(birthday__gt=max_birthday)
+        
+        return queryset
 
 class BabysitterFilterset(filters.FilterSet):
-    age = filters.NumberFilter(method='filter_by_age')
-
-    def filter_by_age(self, queryset, name, value):
-        return queryset.annotate(
-            age = Func(F('birthday'), function='age')
-        )
-
     class Meta:
         model = Babysitter
         fields = {
@@ -75,7 +76,7 @@ class BabysitterListView(generics.ListAPIView):
     model = Babysitter
     serializer_class = BabysitterSerializer
     filterset_class  = BabysitterFilterset
-    filter_backends = (filters.DjangoFilterBackend, drffilters.OrderingFilter)
+    filter_backends = (filters.DjangoFilterBackend, drffilters.OrderingFilter, AgeFilterBackend)
     ordering_fields = ('hourly_rate',)
     ordering = ('-hourly_rate',)
 
@@ -84,6 +85,7 @@ class BabysitterListView(generics.ListAPIView):
             Q(bookingtable__end_time__lte=timezone.now()) | ~Q(bookingtable__isnull=False),
             published=True
         )
+
         return queryset
 
 class RetrieveBabysitterByIdView(APIView):
