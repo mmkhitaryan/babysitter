@@ -24,6 +24,15 @@ class Babysitter(models.Model):
     avatar = models.ImageField(upload_to='avatars')
     education = models.IntegerField(choices=EDUCATION_CHOICES, default=EDUCATION_CHOICES[1][0])
 
+    @property
+    def age(self):
+        # Calculate age based on date_of_birth
+        from datetime import date
+
+        today = date.today()
+        age = today.year - self.birthday.year
+        return age
+
 class Family(models.Model):
     PAYMENT_METHOD = [
         (1, "Card"),
