@@ -19,6 +19,7 @@ from .serializers import BabysitterAvatarSerializer
 from .models import Babysitter, BookingTable
 from authapp.models import CustomUser
 from django.db.models import Q
+from django.db.models import F, Func
 
 
 class OnlyForFamily(BasePermission):
@@ -29,15 +30,30 @@ class OnlyForBabysitter(BasePermission):
     def has_permission(self, request, view):
         return request.user.user_type==1
 
+class AgeFilter(filters.Filter):
+    def filter(self, qs, value):
+        from datetime import date
+
+        today = date.today()
+        age = today.year - obj.birthday.year
+
+        return qs.filter(**{self.field_name: age})
 
 class BabysitterFilterset(filters.FilterSet):
+    age = filters.NumberFilter(method='filter_by_age')
+
+    def filter_by_age(self, queryset, name, value):
+        return queryset.annotate(
+            age = Func(F('birthday'), function='age')
+        )
+
     class Meta:
         model = Babysitter
         fields = {
             'hourly_rate': ['exact', 'lte', 'gte', 'gt', 'lt'],
             'birthday': ['exact', 'lte', 'gte', 'gt', 'lt'],
             'years_of_experience': ['exact', 'lte', 'gte', 'gt', 'lt'],
-            'for_grandparents': ['exact']
+            'for_grandparents': ['exact'],
         }
 
 class UploadBabysitterAvatarView(APIView):
@@ -94,7 +110,7 @@ class CurrentOrderView(APIView):
         )
 
         if last_active_booking.count()==0:
-            return Response({"status": "There is no current active bookings on your account"}, status=status.HTTP_200_OK)
+            return Response({"status": "There is no current active bookings on your account"}, status=status.HTTP_404_NOT_FOUND)
         
         last_active_booking = last_active_booking[0]
         last_active_booking.delete()
@@ -114,7 +130,7 @@ class CurrentOrderView(APIView):
         )
 
         if last_active_booking.count()==0:
-            return Response({"status": "There is no current active bookings on your account"}, status=status.HTTP_200_OK)
+            return Response({"status": "There is no current active bookings on your account"}, status=status.HTTP_404_NOT_FOUND)
         
         last_active_booking = last_active_booking[0]
 
@@ -133,10 +149,10 @@ class RetrieveBabysitterView(APIView):
         serializer = BabysitterSerializer(users_babysitter, data=request.data, context={'request': request})
         if serializer.is_valid():
             serializer.save()
+            users_babysitter.published = False
+            users_babysitter.save()
             return Response(serializer.data, status=status.HTTP_201_CREATED)
 
-        users_babysitter.published = False
-        users_babysitter.save()
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 class RetrieveFamilyView(APIView):
