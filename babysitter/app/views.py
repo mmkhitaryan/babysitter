@@ -13,8 +13,8 @@ from django_filters import rest_framework as filters
 from rest_framework import filters as drffilters
 from rest_framework.permissions import BasePermission
 
-from .serializers import BabysitterSerializer, BookingTableSerializer, FamilySerializer
-from .serializers import BabysitterAvatarSerializer, BabysitterCertificateSerializer
+from .serializers import BabysitterSerializer, BookingTableSerializer, FamilySerializer, BabysitterSerializerDetailView
+from .serializers import BabysitterAvatarSerializer, BabysitterCertificateSerializer, ReviewSerializer
 
 from .models import Babysitter, BookingTable
 from authapp.models import CustomUser
@@ -93,7 +93,7 @@ class RetrieveBabysitterByIdView(APIView):
 
     def get(self, request, pk, format=None):
         babysitter = Babysitter.objects.get(id=pk)
-        babysitter = BabysitterSerializer(babysitter, context={'request': request})
+        babysitter = BabysitterSerializerDetailView(babysitter, context={'request': request})
         return Response(babysitter.data)
 
 class CurrentOrderView(APIView):
@@ -242,3 +242,22 @@ class ManageCertificatesView(APIView):
 
         the_cert.delete()
         return Response({"status": "Cert is removed"})
+
+class ReviewsView(APIView):
+    authentication_classes = (TokenAuthentication,)
+    permission_classes = (IsAuthenticated, OnlyForFamily)
+
+    def post(self, request, pk, format=None):
+        babysitter = Babysitter.objects.get(id=pk)
+        serializer = ReviewSerializer(data=request.data, context={'request': request})
+        if serializer.is_valid():
+            serializer.validated_data['babysitter'] = babysitter
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+    def get(self, request, pk, format=None):
+        babysitter = Babysitter.objects.get(id=pk)
+        reviews = ReviewSerializer(babysitter.reviews, many=True, context={'request': request})
+        return Response(reviews.data)

@@ -1,5 +1,7 @@
+from django.db.models import Avg
+
 from rest_framework import serializers
-from .models import Babysitter, BookingTable, Family, Certificate
+from .models import Babysitter, BookingTable, Family, Certificate, Review
 from rest_framework.serializers import ImageField
 
 class BabysitterCertificateSerializer(serializers.ModelSerializer):
@@ -23,6 +25,26 @@ class BabysitterSerializer(serializers.ModelSerializer):
         model = Babysitter
         fields = ['id', 'hourly_rate', 'years_of_experience', 'bio', 'published', 'full_name', 'for_grandparents', 'birthday', 'gender', 'avatar', 'education', 'age']
         read_only_fields = ('published', 'avatar')
+
+class ReviewSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Review
+        fields = ['id', 'text', 'rating']
+
+
+class BabysitterSerializerDetailView(BabysitterSerializer):
+    avg_rating = serializers.SerializerMethodField()
+    reviews = ReviewSerializer(many=True, read_only=True)
+
+
+    def get_avg_rating(self, obj):
+        avg_rating = obj.reviews.aggregate(Avg('rating'))['rating__avg']
+        return avg_rating
+
+    class Meta:
+        model = Babysitter
+        fields = ['id', 'hourly_rate', 'years_of_experience', 'bio', 'published', 'full_name', 'for_grandparents', 'birthday', 'gender', 'avatar', 'education', 'avg_rating', 'reviews']
+
 
 class BabysitterAvatarSerializer(serializers.ModelSerializer):
     avatar = serializers.ImageField()

@@ -1,6 +1,7 @@
 from django.db import models
 
 from django.contrib.auth import get_user_model
+from django.core.validators import MaxValueValidator, MinValueValidator
 
 User = get_user_model()
 
@@ -45,3 +46,10 @@ class BookingTable(models.Model):
 class Certificate(models.Model):
     babysitter = models.ForeignKey(Babysitter, on_delete=models.CASCADE, related_name='certificates')
     certificate_file = models.ImageField(upload_to='certificates')
+
+class Review(models.Model):
+    babysitter = models.ForeignKey(Babysitter, on_delete=models.CASCADE, related_name='reviews')
+    text = models.TextField()
+    rating = models.PositiveIntegerField(
+        validators=[MaxValueValidator(5), MinValueValidator(1)]
+    )

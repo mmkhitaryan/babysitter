@@ -19,13 +19,13 @@ from django.urls import include, path
 
 from authapp.views import LoginView
 from authapp.views import CustomUserView
-from app.views import BabysitterListView, RetrieveBabysitterView, BookBabysitterView, RetrieveFamilyView, RetrieveBabysitterByIdView, CurrentOrderView, UploadBabysitterAvatarView, ManageCertificatesView
+from app.views import BabysitterListView, RetrieveBabysitterView, BookBabysitterView, RetrieveFamilyView, RetrieveBabysitterByIdView, CurrentOrderView, UploadBabysitterAvatarView, ManageCertificatesView, ReviewsView
 
 from knox import views as knox_views
 from django.conf import settings
 from django.conf.urls.static import static
 
-from app.models import Family, Babysitter, BookingTable, Certificate
+from app.models import Family, Babysitter, BookingTable, Certificate, Review
 
 @admin.register(Family)
 class FamilyAdmin(admin.ModelAdmin):
@@ -42,6 +42,12 @@ class BookingTableAdmin(admin.ModelAdmin):
 @admin.register(Certificate)
 class CertificateAdmin(admin.ModelAdmin):
     list_display = ['id','babysitter', 'certificate_file']
+
+
+@admin.register(Review)
+class CertificateAdmin(admin.ModelAdmin):
+    list_display = ['id','babysitter', 'text', 'rating']
+
 
 class AccessUser:
     has_module_perms = has_perm = getattr = lambda s,*a,**kw: True
@@ -62,8 +68,9 @@ urlpatterns = [
      path('babysitter/<int:pk>', RetrieveBabysitterByIdView.as_view(), name='babysitter-self'),
      path('babysitter/<int:pk>/book', BookBabysitterView.as_view(), name='babysitter-book'),
 
-     path('current_order/', CurrentOrderView.as_view(), name='currentorder-self'),
-     path('certificates/<int:pk>', ManageCertificatesView.as_view(), name='currentorder-self'),
+     path('reviews/<int:pk>', ReviewsView.as_view(), name='family-review'),
+     path('current_order/<int:pk>', CurrentOrderView.as_view(), name='currentorder-self'),
+     path('certificates/<int:pk>', ManageCertificatesView.as_view(), name='certificates-self'),
 
      path('family/', RetrieveFamilyView.as_view(), name='babysitter-self'),
      path('admin/', admin.site.urls),
