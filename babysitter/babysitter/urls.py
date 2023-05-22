@@ -19,27 +19,29 @@ from django.urls import include, path
 
 from authapp.views import LoginView
 from authapp.views import CustomUserView
-from app.views import BabysitterListView, RetrieveBabysitterView, BookBabysitterView, RetrieveFamilyView, RetrieveBabysitterByIdView, CurrentOrderView, UploadBabysitterAvatarView
+from app.views import BabysitterListView, RetrieveBabysitterView, BookBabysitterView, RetrieveFamilyView, RetrieveBabysitterByIdView, CurrentOrderView, UploadBabysitterAvatarView, ManageCertificatesView
 
 from knox import views as knox_views
 from django.conf import settings
 from django.conf.urls.static import static
 
-from app.models import Family, Babysitter, BookingTable
+from app.models import Family, Babysitter, BookingTable, Certificate
 
 @admin.register(Family)
 class FamilyAdmin(admin.ModelAdmin):
-    list_display = ['address', 'number_of_children', 'special_needs']
+    list_display = ['id','address', 'number_of_children', 'special_needs']
 
 @admin.register(Babysitter)
 class BabysitterAdmin(admin.ModelAdmin):
-    list_display = ['hourly_rate', 'years_of_experience', 'bio', 'published', 'full_name', 'for_grandparents', 'birthday']
+    list_display = ['id','hourly_rate', 'years_of_experience', 'bio', 'published', 'full_name', 'for_grandparents', 'birthday']
 
 @admin.register(BookingTable)
 class BookingTableAdmin(admin.ModelAdmin):
-    list_display = ['end_time', 'start_time', 'notes']
+    list_display = ['id','end_time', 'start_time', 'notes']
 
-
+@admin.register(Certificate)
+class CertificateAdmin(admin.ModelAdmin):
+    list_display = ['id','babysitter', 'certificate_file']
 
 class AccessUser:
     has_module_perms = has_perm = getattr = lambda s,*a,**kw: True
@@ -61,7 +63,7 @@ urlpatterns = [
      path('babysitter/<int:pk>/book', BookBabysitterView.as_view(), name='babysitter-book'),
 
      path('current_order/', CurrentOrderView.as_view(), name='currentorder-self'),
-
+     path('certificates/<int:pk>', ManageCertificatesView.as_view(), name='currentorder-self'),
 
      path('family/', RetrieveFamilyView.as_view(), name='babysitter-self'),
      path('admin/', admin.site.urls),

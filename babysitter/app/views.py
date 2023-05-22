@@ -14,7 +14,7 @@ from rest_framework import filters as drffilters
 from rest_framework.permissions import BasePermission
 
 from .serializers import BabysitterSerializer, BookingTableSerializer, FamilySerializer
-from .serializers import BabysitterAvatarSerializer
+from .serializers import BabysitterAvatarSerializer, BabysitterCertificateSerializer
 
 from .models import Babysitter, BookingTable
 from authapp.models import CustomUser
@@ -210,3 +210,35 @@ class BookBabysitterView(APIView):
 
         print(f"{babysitter.full_name}, you have a new booking")
         return Response(BookingTableSerializer(b, context={'request': request}).data, status=status.HTTP_201_CREATED)
+
+class ManageCertificatesView(APIView):
+    authentication_classes = (TokenAuthentication,)
+    permission_classes = (IsAuthenticated, OnlyForBabysitter)
+
+    def post(self, request, format=None):
+        babysitter = request.user.babysitter
+        serializer = BabysitterCertificateSerializer(data=request.data, context={'request': request})
+        if serializer.is_valid():
+            babysitter.published = False
+            babysitter.save()
+
+            serializer.validated_data['babysitter'] = babysitter
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+    def get(self, request, format=None):
+        babysitter_certificates = request.user.babysitter.certificates
+        babysitter = BabysitterCertificateSerializer(babysitter_certificates, many=True, context={'request': request})
+        return Response(babysitter.data)
+
+    def delete(self, request, pk, format=None):
+        babysitter_certificates = request.user.babysitter.certificates
+        the_cert = babysitter_certificates.filter(id=pk).first()
+
+        if not the_cert:
+            return Response({"error": "There is no such cert"}, status=status.HTTP_404_NOT_FOUND)
+
+        the_cert.delete()
+        return Response({"status": "Cert is removed"})

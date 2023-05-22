@@ -1,6 +1,11 @@
 from rest_framework import serializers
-from .models import Babysitter, BookingTable, Family
+from .models import Babysitter, BookingTable, Family, Certificate
 from rest_framework.serializers import ImageField
+
+class BabysitterCertificateSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Certificate
+        fields = ['id', 'certificate_file']
 
 class BabysitterSerializer(serializers.ModelSerializer):
     birthday = serializers.DateField()

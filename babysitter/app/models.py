@@ -41,3 +41,7 @@ class BookingTable(models.Model):
     notes = models.CharField(max_length=500)
     family = models.ForeignKey(Family, on_delete=models.CASCADE, related_name='bookingtable')
     babysitter = models.ForeignKey(Babysitter, on_delete=models.CASCADE, related_name='bookingtable')
+
+class Certificate(models.Model):
+    babysitter = models.ForeignKey(Babysitter, on_delete=models.CASCADE, related_name='certificates')
+    certificate_file = models.ImageField(upload_to='certificates')
