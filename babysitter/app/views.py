@@ -1,4 +1,4 @@
-from datetime import timedelta
+from datetime import timedelta, datetime
 from django.shortcuts import get_object_or_404
 from django.utils import timezone
 from rest_framework import status
@@ -82,7 +82,7 @@ class BabysitterListView(generics.ListAPIView):
 
     def get_queryset(self):
         queryset = Babysitter.objects.filter(
-            Q(bookingtable__end_time__lte=timezone.now()) | ~Q(bookingtable__isnull=False),
+            Q(bookingtable__start_time__gte=timezone.now()),
             published=True
         )
 
@@ -182,18 +182,30 @@ class BookBabysitterView(APIView):
         # if not, create new booking
         user_family = request.user.family
         babysitter = Babysitter.objects.get(id=pk)
+        hours = int(request.data['hours'])
+
+        start_time = timezone.now()
+        end_time = timezone.now()+timedelta(hours=hours)
+
+        if start_time_raw := request.data.get('start_time'):
+            start_time = datetime.fromisoformat(start_time_raw)
+
+            if start_time>=end_time:
+                return Response({"error": "Start time can not be in the past"}, status=status.HTTP_400_BAD_REQUEST)
+
+            end_time = start_time+timedelta(hours=hours)
 
         # TODO: unit test
         is_babysitter_free_now = babysitter.bookingtable.filter(
-            end_time__gte=timezone.now()
+            start_time__lte=start_time,
+            end_time__lte=end_time
         ).count()==0
 
 
         is_family_free_now = user_family.bookingtable.filter(
-            end_time__gte=timezone.now()
+            start_time__lte=start_time,
+            end_time__lte=end_time
         ).count()==0
-
-        hours = int(request.data['hours'])
 
         if not is_family_free_now:
             return Response({"error": "you can have only 1 active booking"}, status=status.HTTP_409_CONFLICT)
@@ -204,12 +216,12 @@ class BookBabysitterView(APIView):
         b = BookingTable.objects.create(
             family=user_family,
             babysitter=babysitter,
-            end_time=timezone.now()+timedelta(hours=hours)
+            end_time=end_time,
+            start_time=start_time
         )
 
-
         print(f"{babysitter.full_name}, you have a new booking")
-        return Response(BookingTableSerializer(b, context={'request': request}).data, status=status.HTTP_201_CREATED)
+        return Response(BookingTableSerializer(b).data, status=status.HTTP_201_CREATED)
 
 class ManageCertificatesView(APIView):
     authentication_classes = (TokenAuthentication,)

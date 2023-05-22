@@ -1,3 +1,6 @@
+from datetime import timedelta, datetime
+
+from django.utils import timezone
 from django.db.models import Avg
 
 from rest_framework import serializers
@@ -12,6 +15,7 @@ class BabysitterCertificateSerializer(serializers.ModelSerializer):
 class BabysitterSerializer(serializers.ModelSerializer):
     birthday = serializers.DateField()
     age = serializers.SerializerMethodField()
+    booked_dates = serializers.SerializerMethodField()
 
     def get_age(self, obj):
         # Calculate age based on date_of_birth
@@ -21,9 +25,16 @@ class BabysitterSerializer(serializers.ModelSerializer):
         age = today.year - obj.birthday.year
         return age
 
+    def get_booked_dates(self, obj):
+        start_time = timezone.now()
+        b = obj.bookingtable.filter(
+            start_time__gte=start_time,
+        )
+        return BookingTableShortSerializer(b, many=True).data
+
     class Meta:
         model = Babysitter
-        fields = ['id', 'hourly_rate', 'years_of_experience', 'bio', 'published', 'full_name', 'for_grandparents', 'birthday', 'gender', 'avatar', 'education', 'age']
+        fields = ['id', 'hourly_rate', 'years_of_experience', 'bio', 'published', 'full_name', 'for_grandparents', 'birthday', 'gender', 'avatar', 'education', 'age', 'booked_dates']
         read_only_fields = ('published', 'avatar')
 
 class ReviewSerializer(serializers.ModelSerializer):
@@ -57,6 +68,11 @@ class BookingTableSerializer(serializers.ModelSerializer):
         model = BookingTable
         fields = ['id','start_time','end_time', 'notes', 'family', 'babysitter']
         depth = 1
+
+class BookingTableShortSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = BookingTable
+        fields = ['id','start_time','end_time']
 
 class FamilySerializer(serializers.ModelSerializer):
     class Meta:
