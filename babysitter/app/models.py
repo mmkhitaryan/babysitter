@@ -1,3 +1,4 @@
+from django.utils import timezone
 from django.db import models
 
 from django.contrib.auth import get_user_model
@@ -20,7 +21,7 @@ class Babysitter(models.Model):
     published = models.BooleanField(default=False)
     full_name = models.CharField(max_length=25, default='')
     for_grandparents = models.BooleanField(default=False)
-    birthday = models.DateField(auto_now_add=True)
+    birthday = models.DateField(default=timezone.now())
     gender = models.BooleanField(default=False)
     avatar = models.ImageField(upload_to='avatars')
     education = models.IntegerField(choices=EDUCATION_CHOICES, default=EDUCATION_CHOICES[1][0])
