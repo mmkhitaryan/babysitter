@@ -69,6 +69,7 @@ urlpatterns = [
      path('babysitter/<int:pk>/book', BookBabysitterView.as_view(), name='babysitter-book'),
 
      path('reviews/<int:pk>', ReviewsView.as_view(), name='family-review'),
+     path('current_order/', CurrentOrderView.as_view(), name='currentorder-self'),
      path('current_order/<int:pk>', CurrentOrderView.as_view(), name='currentorder-self'),
      path('certificates/<int:pk>', ManageCertificatesView.as_view(), name='certificates-self'),
 
