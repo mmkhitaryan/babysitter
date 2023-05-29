@@ -82,7 +82,7 @@ class BabysitterListView(generics.ListAPIView):
 
     def get_queryset(self):
         queryset = Babysitter.objects.filter(
-            Q(bookingtable__start_time__lte=timezone.now()) | ~Q(bookingtable__isnull=False),
+            Q(bookingtable__start_time__gte=timezone.now()) | ~Q(bookingtable__isnull=False),
             published=True
         )
 
@@ -189,11 +189,11 @@ class BookBabysitterView(APIView):
 
         if start_time_raw := request.data.get('start_time'):
             start_time = datetime.fromisoformat(start_time_raw)
+            end_time = start_time+timedelta(hours=hours)
 
-            if start_time<=end_time:
+            if timezone.now()>=start_time:
                 return Response({"error": "Start time can not be in the past"}, status=status.HTTP_400_BAD_REQUEST)
 
-            end_time = start_time+timedelta(hours=hours)
 
         # TODO: unit test
         is_babysitter_free_now = babysitter.bookingtable.filter(
