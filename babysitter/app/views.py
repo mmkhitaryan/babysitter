@@ -211,7 +211,7 @@ class BookBabysitterView(APIView):
             return Response({"error": "you can have only 1 active booking"}, status=status.HTTP_409_CONFLICT)
 
         if not is_babysitter_free_now:
-            return Response({"error": "babysitter is already booked"}, status=status.HTTP_400_BAD_REQUEST)
+            return Response({"error": "babysitter is already booked for that time"}, status=status.HTTP_400_BAD_REQUEST)
 
         b = BookingTable.objects.create(
             family=user_family,
