@@ -84,7 +84,7 @@ class BabysitterListView(generics.ListAPIView):
         queryset = Babysitter.objects.filter(
             Q(bookingtable__start_time__gte=timezone.now()) | ~Q(bookingtable__isnull=False),
             published=True
-        )
+        ).distinct()
 
         return queryset
 

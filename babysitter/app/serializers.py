@@ -27,10 +27,20 @@ class BabysitterSerializer(serializers.ModelSerializer):
 
     def get_booked_dates(self, obj):
         start_time = timezone.now()
+        
         b = obj.bookingtable.filter(
             start_time__gte=start_time,
         )
-        return BookingTableShortSerializer(b, many=True).data
+
+        request = self.context['request']
+
+        combined_queryset = b
+        if request.user.is_authenticated:
+            combined_queryset = b | request.user.family.bookingtable.filter(
+                start_time__gte=start_time,
+            )
+
+        return BookingTableShortSerializer(combined_queryset, many=True).data
 
     class Meta:
         model = Babysitter
