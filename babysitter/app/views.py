@@ -197,13 +197,13 @@ class BookBabysitterView(APIView):
 
         # TODO: unit test
         is_babysitter_free_now = babysitter.bookingtable.filter(
-            start_time__lte=start_time,
+            start_time__gte=start_time,
             end_time__lte=end_time
         ).count()==0
 
 
         is_family_free_now = user_family.bookingtable.filter(
-            start_time__lte=start_time,
+            start_time__gte=start_time,
             end_time__lte=end_time
         ).count()==0
 
