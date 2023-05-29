@@ -197,21 +197,21 @@ class BookBabysitterView(APIView):
 
         # TODO: unit test
         is_babysitter_free_now = babysitter.bookingtable.filter(
-            start_time__gte=start_time,
-            end_time__lte=end_time
+            start_time__lt=end_time,
+            end_time__gt=start_time
         ).count()==0
 
 
         is_family_free_now = user_family.bookingtable.filter(
-            start_time__gte=start_time,
-            end_time__lte=end_time
+            start_time__lt=end_time,
+            end_time__gt=start_time
         ).count()==0
 
         if not is_family_free_now:
-            return Response({"error": "you can have only 1 active booking"}, status=status.HTTP_409_CONFLICT)
+            return Response({"error": "You already have a booking for that time"}, status=status.HTTP_409_CONFLICT)
 
         if not is_babysitter_free_now:
-            return Response({"error": "babysitter is already booked for that time"}, status=status.HTTP_400_BAD_REQUEST)
+            return Response({"error": "Babysitter is already booked for that time"}, status=status.HTTP_400_BAD_REQUEST)
 
         b = BookingTable.objects.create(
             family=user_family,
