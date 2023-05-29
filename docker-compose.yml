@@ -15,6 +15,7 @@ services:
   web:
     restart: always
     build: .
+    image: registry.digitalocean.com/kek9999
     env_file:
       - ./.env
     ports:
