@@ -26,7 +26,10 @@ SECRET_KEY = b"\x05BP\xa4\xd8\x99\x87-\xea\xea7\xd6\xb1'\x06\x12"
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = [
+    "http://209.38.232.76:8081",
+    "http://209.38.232.76"
+]
 from datetime import timedelta
 
 
