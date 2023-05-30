@@ -20,7 +20,7 @@ from .models import Babysitter, BookingTable
 from authapp.models import CustomUser
 from django.db.models import Q
 from django.db.models import F, Func
-from .sms_service import send_sms
+from authapp.sms_service import send_sms
 
 
 class OnlyForFamily(BasePermission):
