@@ -30,7 +30,8 @@ ALLOWED_HOSTS = [
     "209.38.232.76:8081",
     "209.38.232.76",
     "localhost",
-    "127.0.0.1"
+    "127.0.0.1",
+    "bbak.mkhitaryan.pw"
 ]
 from datetime import timedelta
 
