@@ -78,6 +78,8 @@ CORS_ALLOWED_ORIGINS = [
     "http://localhost:3000",
     "http://127.0.0.1:9000",
     "https://babysitter-react.vercel.app",
+    "http://209.38.232.76:8081",
+    "http://209.38.232.76"
 ]
 
 ROOT_URLCONF = 'babysitter.urls'
