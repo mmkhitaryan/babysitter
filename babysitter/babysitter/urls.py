@@ -26,6 +26,7 @@ from django.conf import settings
 from django.conf.urls.static import static
 
 from app.models import Family, Babysitter, BookingTable, Certificate, Review
+from authapp.models import CustomUser
 
 @admin.register(Family)
 class FamilyAdmin(admin.ModelAdmin):
@@ -42,6 +43,10 @@ class BookingTableAdmin(admin.ModelAdmin):
 @admin.register(Certificate)
 class CertificateAdmin(admin.ModelAdmin):
     list_display = ['id','babysitter', 'certificate_file']
+
+@admin.register(CustomUser)
+class CustomUserAdmin(admin.ModelAdmin):
+    list_display = ['id','user_type', 'phone']
 
 
 @admin.register(Review)
