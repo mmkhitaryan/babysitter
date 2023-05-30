@@ -85,7 +85,8 @@ CORS_ALLOWED_ORIGINS = [
     "http://127.0.0.1:9000",
     "https://babysitter-react.vercel.app",
     "http://209.38.232.76:8081",
-    "http://209.38.232.76"
+    "http://209.38.232.76",
+    "bbak.mkhitaryan.pw"
 ]
 
 ROOT_URLCONF = 'babysitter.urls'
