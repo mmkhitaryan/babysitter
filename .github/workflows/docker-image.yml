@@ -15,8 +15,8 @@ jobs:
     steps:
     - uses: actions/checkout@v3
     - name: Build the Docker image
-      run: docker build . --file Dockerfile --tag my-image-name:$(date +%s)
+      run: docker compose build
     - name: Login to registry
       run: docker login -p ${{ secrets.REGISTRY_SECRET }} -u ${{ secrets.REGISTRY_SECRET }} registry.digitalocean.com
     - name: Upload to registry
-      run: docker compose push web
+      run: docker compose -f docker-compose.yml -f docker-compose.prod.yml push
