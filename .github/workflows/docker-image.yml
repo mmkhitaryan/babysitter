@@ -7,9 +7,7 @@ on:
     branches: [ "master" ]
 
 jobs:
-
   build:
-
     runs-on: ubuntu-latest
 
     steps:
@@ -20,3 +18,15 @@ jobs:
       run: docker login -p ${{ secrets.REGISTRY_SECRET }} -u ${{ secrets.REGISTRY_SECRET }} registry.digitalocean.com
     - name: Upload to registry
       run: docker compose -f docker-compose.yml -f docker-compose.prod.yml push
+
+  deploy:
+    name: Deploy
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v1
+      - uses: actions-hub/kubectl@master
+        env:
+          KUBE_CONFIG: ${{ secrets.KUBE_CONFIG }}
+        with:
+          args: get pods
