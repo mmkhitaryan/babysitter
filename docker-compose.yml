@@ -16,8 +16,6 @@ services:
     restart: always
     build: .
     image: registry.digitalocean.com/kek9999
-    env_file:
-      - ./.env
     ports:
       - "8081:8000"
     depends_on:
