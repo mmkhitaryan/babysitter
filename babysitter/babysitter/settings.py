@@ -88,6 +88,7 @@ CORS_ALLOWED_ORIGINS = [
     "http://209.38.232.76",
     "https://bbak.mkhitaryan.pw"
 ]
+CSRF_TRUSTED_ORIGINS = ['https://bbak.mkhitaryan.pw']
 
 ROOT_URLCONF = 'babysitter.urls'
 
