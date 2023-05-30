@@ -5,12 +5,13 @@ from datetime import timedelta, timezone
 from jose import jwe
 from django.conf import settings
 from .models import CustomUser
+from sms_service import send_sms
 
 def create_sms_challenge(phone):
     random_sms_code = "".join([str(secrets.randbelow(9)) for digit in range(6)])
     # istead of using sms provider just print
     exipery_date = (datetime.now(timezone.utc) + timedelta(seconds=60 * 5)).timestamp()
-    print(random_sms_code)
+    send_sms(phone, random_sms_code)
 
     return jwe.encrypt(json.dumps({
         "sms_code": random_sms_code,
