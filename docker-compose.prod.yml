@@ -1,9 +1,6 @@
 version: '3'
 
 services:
-  web:
-    build: .
-    image: registry.digitalocean.com/kek9999/baby-web
   caddy:
     image: caddy
     ports:
