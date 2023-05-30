@@ -18,6 +18,12 @@ jobs:
       run: docker login -p ${{ secrets.REGISTRY_SECRET }} -u ${{ secrets.REGISTRY_SECRET }} registry.digitalocean.com
     - name: Upload to registry
       run: docker compose -f docker-compose.yml -f docker-compose.prod.yml push
+    - name: Install kompose
+      run: curl -L https://github.com/kubernetes/kompose/releases/download/v1.28.0/kompose-linux-amd64 -o kompose |
+           chmod +x kompose |
+           sudo mv ./kompose /usr/local/bin/kompose
+    - name: Generate kubernetes confing with kompose
+      run: kompose convert -f docker-compose.yml -f docker-compose.prod.yml
 
   deploy:
     name: Deploy
@@ -29,7 +35,6 @@ jobs:
         env:
           KUBE_CONFIG: ${{ secrets.KUBE_CONFIG }}
         with:
-          args: kompose convert -f docker-compose.yaml |
-                kubectl apply -f . |
+          args: kubectl apply -f . |
                 kubectl get po
 
