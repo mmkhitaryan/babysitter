@@ -28,7 +28,9 @@ DEBUG = True
 
 ALLOWED_HOSTS = [
     "209.38.232.76:8081",
-    "209.38.232.76"
+    "209.38.232.76",
+    "localhost",
+    "127.0.0.1"
 ]
 from datetime import timedelta
 
