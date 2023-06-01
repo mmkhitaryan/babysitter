@@ -14,9 +14,9 @@ from rest_framework import filters as drffilters
 from rest_framework.permissions import BasePermission
 
 from .serializers import BabysitterSerializer, BookingTableSerializer, FamilySerializer, BabysitterSerializerDetailView
-from .serializers import BabysitterAvatarSerializer, BabysitterCertificateSerializer, ReviewSerializer
+from .serializers import BabysitterAvatarSerializer, BabysitterCertificateSerializer, ReviewSerializer, AddressSerializer
 
-from .models import Babysitter, BookingTable
+from .models import Babysitter, BookingTable, Address
 from authapp.models import CustomUser
 from django.db.models import Q
 from django.db.models import F, Func
@@ -72,6 +72,12 @@ class UploadBabysitterAvatarView(APIView):
             return Response(serializer.data, status=status.HTTP_201_CREATED)
 
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+class AddressListView(generics.ListAPIView):
+    model = Address
+    serializer_class = AddressSerializer
+    def get_queryset(self):
+        return Address.objects.all()
 
 class BabysitterListView(generics.ListAPIView):
     model = Babysitter

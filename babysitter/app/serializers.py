@@ -4,7 +4,7 @@ from django.utils import timezone
 from django.db.models import Avg
 
 from rest_framework import serializers
-from .models import Babysitter, BookingTable, Family, Certificate, Review
+from .models import Babysitter, BookingTable, Family, Certificate, Review, Address
 from rest_framework.serializers import ImageField
 
 class BabysitterCertificateSerializer(serializers.ModelSerializer):
@@ -44,7 +44,7 @@ class BabysitterSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Babysitter
-        fields = ['id', 'hourly_rate', 'years_of_experience', 'bio', 'published', 'full_name', 'for_grandparents', 'birthday', 'gender', 'avatar', 'education', 'age', 'booked_dates']
+        fields = ['id', 'hourly_rate', 'years_of_experience', 'bio', 'published', 'full_name', 'for_grandparents', 'birthday', 'gender', 'avatar', 'education', 'age', 'booked_dates', 'address_type']
         read_only_fields = ('published', 'avatar')
 
 class ReviewSerializer(serializers.ModelSerializer):
@@ -64,7 +64,7 @@ class BabysitterSerializerDetailView(BabysitterSerializer):
 
     class Meta:
         model = Babysitter
-        fields = ['id', 'hourly_rate', 'years_of_experience', 'bio', 'published', 'full_name', 'for_grandparents', 'birthday', 'gender', 'avatar', 'education', 'avg_rating', 'reviews']
+        fields = ['id', 'hourly_rate', 'years_of_experience', 'bio', 'published', 'full_name', 'for_grandparents', 'birthday', 'gender', 'avatar', 'education', 'avg_rating', 'reviews', 'address_type']
 
 
 class BabysitterAvatarSerializer(serializers.ModelSerializer):
@@ -87,4 +87,10 @@ class BookingTableShortSerializer(serializers.ModelSerializer):
 class FamilySerializer(serializers.ModelSerializer):
     class Meta:
         model = Family
-        fields = ['id','address', 'payment_method', 'number_of_children', 'special_needs']
+        fields = ['id','address', 'payment_method', 'number_of_children', 'special_needs', 'address_type']
+
+
+class AddressSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Address
+        fields = ['id','name']

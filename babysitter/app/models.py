@@ -7,6 +7,9 @@ from django.core.validators import MaxValueValidator, MinValueValidator
 User = get_user_model()
 
 # Create your models here.
+class Address(models.Model):
+    name = models.CharField(255)
+
 class Babysitter(models.Model):
     EDUCATION_CHOICES = [
         (1, "высшее"),
@@ -25,6 +28,7 @@ class Babysitter(models.Model):
     gender = models.BooleanField(default=False)
     avatar = models.ImageField(upload_to='avatars')
     education = models.IntegerField(choices=EDUCATION_CHOICES, default=EDUCATION_CHOICES[1][0])
+    address_type = models.ManyToManyField(Address)
 
 class Family(models.Model):
     PAYMENT_METHOD = [
@@ -36,6 +40,7 @@ class Family(models.Model):
     number_of_children = models.IntegerField(default=1)
     special_needs = models.CharField(max_length=500, default='')
     user = models.OneToOneField(User, on_delete=models.CASCADE, related_name='family')
+    address_type = models.ForeignKey(Address, on_delete=models.SET_DEFAULT, default=1)
 
 class BookingTable(models.Model):
     end_time = models.DateTimeField()

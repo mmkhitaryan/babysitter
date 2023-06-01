@@ -19,13 +19,13 @@ from django.urls import include, path
 
 from authapp.views import LoginView
 from authapp.views import CustomUserView
-from app.views import BabysitterListView, RetrieveBabysitterView, BookBabysitterView, RetrieveFamilyView, RetrieveBabysitterByIdView, CurrentOrderView, UploadBabysitterAvatarView, ManageCertificatesView, ReviewsView
+from app.views import BabysitterListView, RetrieveBabysitterView, BookBabysitterView, RetrieveFamilyView, RetrieveBabysitterByIdView, CurrentOrderView, UploadBabysitterAvatarView, ManageCertificatesView, ReviewsView, AddressListView
 
 from knox import views as knox_views
 from django.conf import settings
 from django.conf.urls.static import static
 
-from app.models import Family, Babysitter, BookingTable, Certificate, Review
+from app.models import Family, Babysitter, BookingTable, Certificate, Review, Address
 from authapp.models import CustomUser
 
 @admin.register(Family)
@@ -53,6 +53,9 @@ class CustomUserAdmin(admin.ModelAdmin):
 class CertificateAdmin(admin.ModelAdmin):
     list_display = ['id','babysitter', 'text', 'rating']
 
+@admin.register(Address)
+class AddressAdmin(admin.ModelAdmin):
+    list_display = ['id','name']
 
 class AccessUser:
     has_module_perms = has_perm = getattr = lambda s,*a,**kw: True
@@ -78,6 +81,8 @@ urlpatterns = [
      path('current_order/<int:pk>', CurrentOrderView.as_view(), name='currentorder-self'),
      path('certificates/', ManageCertificatesView.as_view(), name='certificates-post'),
      path('certificates/<int:pk>', ManageCertificatesView.as_view(), name='certificates-self'),
+
+     path('addresses/', AddressListView.as_view(), name='addresslist'),
 
      path('family/', RetrieveFamilyView.as_view(), name='babysitter-self'),
      path('admin/', admin.site.urls),
