@@ -229,7 +229,7 @@ class BookBabysitterView(APIView):
             start_time=start_time
         )
 
-        send_sms(babysitter.user.phone, f"{babysitter.full_name}, you have a new booking")
+        send_sms(babysitter.user.phone, f"{babysitter.full_name}, у вас новая запись!")
         return Response(BookingTableSerializer(b).data, status=status.HTTP_201_CREATED)
 
 class ManageCertificatesView(APIView):

@@ -27,6 +27,7 @@ from django.conf.urls.static import static
 
 from app.models import Family, Babysitter, BookingTable, Certificate, Review, Address
 from authapp.models import CustomUser
+from authapp.sms_service import send_sms
 
 @admin.register(Family)
 class FamilyAdmin(admin.ModelAdmin):
@@ -35,6 +36,15 @@ class FamilyAdmin(admin.ModelAdmin):
 @admin.register(Babysitter)
 class BabysitterAdmin(admin.ModelAdmin):
     list_display = ['id','hourly_rate', 'years_of_experience', 'bio', 'published', 'full_name', 'detsad','baby','threeToFive', 'birthday']
+    def save_model(self, request, obj, form, change):
+        if change:  # Check if the object is being updated
+            old_obj = self.model.objects.get(pk=obj.pk)
+            if old_obj.published != obj.published:  # Check if the 'approved' field has changed
+                if obj.published:
+                    send_sms(obj.user.phone, f"{obj.full_name} ваш профиль был одобрен")
+                else:
+                    pass
+        super().save_model(request, obj, form, change)
 
 @admin.register(BookingTable)
 class BookingTableAdmin(admin.ModelAdmin):

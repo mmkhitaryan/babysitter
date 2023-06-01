@@ -11,7 +11,7 @@ def create_sms_challenge(phone):
     random_sms_code = "".join([str(secrets.randbelow(9)) for digit in range(6)])
     # istead of using sms provider just print
     exipery_date = (datetime.now(timezone.utc) + timedelta(seconds=60 * 5)).timestamp()
-    send_sms(phone, random_sms_code)
+    send_sms(phone, f'Ваш код авторизации: {random_sms_code}')
 
     return jwe.encrypt(json.dumps({
         "sms_code": random_sms_code,
