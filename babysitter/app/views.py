@@ -55,7 +55,9 @@ class BabysitterFilterset(filters.FilterSet):
             'hourly_rate': ['exact', 'lte', 'gte', 'gt', 'lt'],
             'birthday': ['exact', 'lte', 'gte', 'gt', 'lt'],
             'years_of_experience': ['exact', 'lte', 'gte', 'gt', 'lt'],
-            'for_grandparents': ['exact'],
+            'detsad': ['exact'],
+            'threeToFive': ['exact'],
+            'birthday': ['exact']
         }
 
 class UploadBabysitterAvatarView(APIView):

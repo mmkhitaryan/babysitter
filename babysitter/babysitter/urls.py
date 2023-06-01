@@ -34,7 +34,7 @@ class FamilyAdmin(admin.ModelAdmin):
 
 @admin.register(Babysitter)
 class BabysitterAdmin(admin.ModelAdmin):
-    list_display = ['id','hourly_rate', 'years_of_experience', 'bio', 'published', 'full_name', 'for_grandparents', 'birthday']
+    list_display = ['id','hourly_rate', 'years_of_experience', 'bio', 'published', 'full_name', 'detsad','baby','threeToFive', 'birthday']
 
 @admin.register(BookingTable)
 class BookingTableAdmin(admin.ModelAdmin):

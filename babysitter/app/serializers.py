@@ -44,7 +44,7 @@ class BabysitterSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Babysitter
-        fields = ['id', 'hourly_rate', 'years_of_experience', 'bio', 'published', 'full_name', 'for_grandparents', 'birthday', 'gender', 'avatar', 'education', 'age', 'booked_dates', 'address_type']
+        fields = ['id', 'hourly_rate', 'years_of_experience', 'bio', 'published', 'full_name', 'detsad','baby','threeToFive', 'birthday', 'gender', 'avatar', 'education', 'age', 'booked_dates', 'address_type']
         read_only_fields = ('published', 'avatar')
 
 class ReviewSerializer(serializers.ModelSerializer):
@@ -64,7 +64,7 @@ class BabysitterSerializerDetailView(BabysitterSerializer):
 
     class Meta:
         model = Babysitter
-        fields = ['id', 'hourly_rate', 'years_of_experience', 'bio', 'published', 'full_name', 'for_grandparents', 'birthday', 'gender', 'avatar', 'education', 'avg_rating', 'reviews', 'address_type']
+        fields = ['id', 'hourly_rate', 'years_of_experience', 'bio', 'published', 'full_name', 'detsad','baby','threeToFive', 'birthday', 'gender', 'avatar', 'education', 'avg_rating', 'reviews', 'address_type']
 
 
 class BabysitterAvatarSerializer(serializers.ModelSerializer):
