@@ -53,11 +53,10 @@ class BabysitterFilterset(filters.FilterSet):
         model = Babysitter
         fields = {
             'hourly_rate': ['exact', 'lte', 'gte', 'gt', 'lt'],
-            'birthday': ['exact', 'lte', 'gte', 'gt', 'lt'],
             'years_of_experience': ['exact', 'lte', 'gte', 'gt', 'lt'],
             'detsad': ['exact'],
             'threeToFive': ['exact'],
-            'birthday': ['exact']
+            'baby': ['exact']
         }
 
 class UploadBabysitterAvatarView(APIView):
