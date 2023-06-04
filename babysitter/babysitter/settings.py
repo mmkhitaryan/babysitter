@@ -31,6 +31,7 @@ ALLOWED_HOSTS = [
     "209.38.232.76",
     "localhost",
     "127.0.0.1",
+    "localhost:3000",
     "bbak.mkhitaryan.pw"
 ]
 from datetime import timedelta
@@ -88,7 +89,7 @@ CORS_ALLOWED_ORIGINS = [
     "http://209.38.232.76",
     "https://bbak.mkhitaryan.pw"
 ]
-CSRF_TRUSTED_ORIGINS = ['https://bbak.mkhitaryan.pw']
+CSRF_TRUSTED_ORIGINS = ['https://bbak.mkhitaryan.pw', 'localhost:3000']
 
 ROOT_URLCONF = 'babysitter.urls'
 
