@@ -77,6 +77,8 @@ class UploadBabysitterAvatarView(APIView):
 class AddressListView(generics.ListAPIView):
     model = Address
     serializer_class = AddressSerializer
+    pagination_class = None
+
     def get_queryset(self):
         return Address.objects.all()
 
