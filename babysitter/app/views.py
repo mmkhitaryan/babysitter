@@ -93,6 +93,7 @@ class BabysitterListView(generics.ListAPIView):
     def get_queryset(self):
         queryset = Babysitter.objects.filter(
             Q(bookingtable__start_time__gte=timezone.now()) | ~Q(bookingtable__isnull=False),
+            address_type__in=[self.request.user.family.address_type],
             published=True
         ).distinct()
 
