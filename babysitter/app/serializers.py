@@ -46,6 +46,8 @@ class BabysitterSerializer(serializers.ModelSerializer):
         model = Babysitter
         fields = ['id', 'hourly_rate', 'years_of_experience', 'bio', 'published', 'full_name', 'detsad','baby','threeToFive', 'birthday', 'gender', 'avatar', 'education', 'age', 'booked_dates', 'address_type']
         read_only_fields = ('published', 'avatar')
+        extra_kwargs = {'address_type': {'required': True}} 
+
 
 class ReviewSerializer(serializers.ModelSerializer):
     class Meta:
@@ -88,6 +90,7 @@ class FamilySerializer(serializers.ModelSerializer):
     class Meta:
         model = Family
         fields = ['id','address', 'payment_method', 'number_of_children', 'special_needs', 'address_type']
+        extra_kwargs = {'address_type': {'required': True}} 
 
 
 class AddressSerializer(serializers.ModelSerializer):
