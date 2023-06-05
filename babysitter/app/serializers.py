@@ -42,6 +42,13 @@ class BabysitterSerializer(serializers.ModelSerializer):
 
         return BookingTableShortSerializer(combined_queryset, many=True).data
 
+    def update(self, instance, validated_data):
+        # Check if the read-only field is provided
+        if not instance.avatar:
+            raise serializers.ValidationError("Приложите аватарку")
+
+        return super().update(instance, validated_data)
+
     class Meta:
         model = Babysitter
         fields = ['id', 'hourly_rate', 'years_of_experience', 'bio', 'published', 'full_name', 'detsad','baby','threeToFive', 'birthday', 'gender', 'avatar', 'education', 'age', 'booked_dates', 'address_type']
