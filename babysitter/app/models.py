@@ -9,6 +9,8 @@ User = get_user_model()
 # Create your models here.
 class Address(models.Model):
     name = models.CharField(255)
+    def __str__(self):
+        return self.name
 
 class Babysitter(models.Model):
     EDUCATION_CHOICES = [
@@ -31,6 +33,9 @@ class Babysitter(models.Model):
     avatar = models.ImageField(upload_to='avatars')
     education = models.IntegerField(choices=EDUCATION_CHOICES, default=EDUCATION_CHOICES[1][0])
     address_type = models.ManyToManyField(Address)
+    def __str__(self):
+        return self.full_name
+
 
 class Family(models.Model):
     PAYMENT_METHOD = [
