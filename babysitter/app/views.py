@@ -91,18 +91,20 @@ class BabysitterListView(generics.ListAPIView):
     ordering = ('-hourly_rate',)
 
     def get_queryset(self):
+        queryset = Babysitter.objects.filter(
+            Q(bookingtable__start_time__gte=timezone.now()) | ~Q(bookingtable__isnull=False),
+            published=True
+        )
+
         address_type = []
         
         if self.request.user.is_authenticated:
             address_type = [self.request.user.family.address_type]
+            queryset = queryset.filter(
+                address_type__in=address_type,
+            )
 
-        queryset = Babysitter.objects.filter(
-            Q(bookingtable__start_time__gte=timezone.now()) | ~Q(bookingtable__isnull=False),
-            address_type__in=address_type,
-            published=True
-        ).distinct()
-
-        return queryset
+        return queryset.distinct()
 
 class RetrieveBabysitterByIdView(APIView):
     authentication_classes = (TokenAuthentication,)
