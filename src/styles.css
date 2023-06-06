@@ -1,0 +1,38 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  html {
+    font-family: 'Inter', 'system-ui';
+    @apply h-full overflow-y-scroll;
+  }
+
+  @supports (font-variation-settings: normal) {
+    html {
+      font-family: 'Inter var', 'system-ui';
+    }
+  }
+
+  body {
+    @apply antialiased h-full;
+  }
+
+  #root {
+    @apply h-full;
+  }
+}
+
+@layer components {
+  .bs-container {
+    @apply mx-auto max-w-7xl px-6 lg:px-8;
+  }
+
+  .bs-input {
+    @apply block w-full rounded-md border-gray-300 shadow-sm focus:border-primary focus:ring-primary sm:text-sm;
+  }
+
+  .bs-label {
+    @apply block text-sm font-medium;
+  }
+}
