@@ -100,9 +100,11 @@ class BabysitterListView(generics.ListAPIView):
         
         if self.request.user.is_authenticated:
             address_type = [self.request.user.family.address_type]
-            queryset = queryset.filter(
-                address_type__in=address_type,
-            )
+
+            if address_type.id!=1:
+                queryset = queryset.filter(
+                    address_type__in=address_type,
+                )
 
         return queryset.distinct()
 
