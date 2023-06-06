@@ -22,8 +22,15 @@ const Hero = () => {
               Мы предоставляем надежных и опытных нянь, которые позаботятся о ваших малышах, пока вы заботитесь о себе.
             </p>
             <div className='mx-auto mt-10 max-w-sm sm:flex sm:max-w-none sm:justify-center'>
-              <div className='space-y-4 sm:mx-auto sm:inline-grid sm:grid-cols-2 sm:gap-5 sm:space-y-0'>
-                {!data && (
+              <div className='space-y-4 sm:mx-auto sm:gap-5 sm:space-y-0'>
+                {data ? (
+                  <Link
+                    to={data ? '/settings' : '/login'}
+                    className='flex items-center justify-center rounded-md border border-transparent bg-negative bg-opacity-60 px-4 py-3 text-base font-medium text-white hover:bg-opacity-70 sm:px-8'
+                  >
+                    Профиль
+                  </Link>
+                ) : (
                   <Link
                     to='/login'
                     className='flex items-center justify-center rounded-md border border-transparent bg-white px-4 py-3 text-base font-medium hover:bg-opacity-70 sm:px-8'
@@ -31,12 +38,6 @@ const Hero = () => {
                     Начать работу
                   </Link>
                 )}
-                <Link
-                  to={data ? '/settings' : '/login'}
-                  className='flex items-center justify-center rounded-md border border-transparent bg-negative bg-opacity-60 px-4 py-3 text-base font-medium text-white hover:bg-opacity-70 sm:px-8'
-                >
-                  Профиль
-                </Link>
               </div>
             </div>
           </div>
