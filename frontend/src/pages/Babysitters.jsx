@@ -1,12 +1,11 @@
 import useBabysitters from '@/hooks/useBabysitters';
-import { useMemo, useState } from 'react';
+import { useDeferredValue, useMemo, useState } from 'react';
 import Modal from '@/components/Modal';
 import useBookBabysitter from '@/hooks/useBookBabysitter';
 import { AnimatePresence } from 'framer-motion';
 import Heading from '@/components/Heading';
 import Card from '@/components/Card';
 import { m } from 'framer-motion';
-import { useDebounce } from 'react-use';
 import { useNavigate } from 'react-router-dom';
 
 const container = {
@@ -20,33 +19,26 @@ const container = {
 };
 
 const Babysitters = () => {
-  const [age, setAge] = useState({
-    min: 18,
-    max: 40,
+  const [filters, setFilters] = useState({
+    age: { min: 18, max: 120 },
+    ordering: '',
+    threeToFive: null,
+    detsad: null,
+    baby: null,
   });
-  const [debouncedAge, setDebouncedAge] = useState({
-    min: 18,
-    max: 40,
-  });
+  const defferedAge = useDeferredValue(filters.age);
 
-  useDebounce(
-    () => {
-      setDebouncedAge(age);
-    },
-    900,
-    [age]
-  );
-  const [ordering, setOrdering] = useState('');
-  const [forGrandparents, setForGrandparents] = useState('');
   const [bookModal, setBookModal] = useState(false);
   const [selectedId, setSelectedId] = useState(null);
   const navigate = useNavigate();
 
   const { data } = useBabysitters({
-    ordering,
-    for_grandparents: forGrandparents,
-    age_min: debouncedAge.min,
-    age_max: debouncedAge.max,
+    ordering: filters.ordering,
+    age_min: defferedAge.min,
+    age_max: defferedAge.max,
+    detsad: filters.detsad,
+    threeToFive: filters.threeToFive,
+    baby: filters.baby,
   });
 
   const selectedBabysitter = useMemo(() => data?.results.find((p) => p.id === selectedId) ?? [], [data, selectedId]);
@@ -65,8 +57,8 @@ const Babysitters = () => {
             id='ordering'
             name='ordering'
             className='mt-1 block w-full rounded-md border-gray-300 py-2 pl-3 pr-10 text-base focus:border-primary focus:outline-none focus:ring-primborder-primary sm:text-sm'
-            onChange={(e) => setOrdering(e.target.value)}
-            value={ordering}
+            onChange={(e) => setFilters((prev) => ({ ...prev, ordering: e.target.value }))}
+            value={filters.ordering}
           >
             <option value='-hourly_rate'>Возрастание цены</option>
             <option value='+hourly_rate'>Понижение цены</option>
@@ -83,10 +75,10 @@ const Babysitters = () => {
               id='age_min'
               name='age_min'
               className='mt-1 bs-input w-24'
-              min={18}
-              max={60}
-              onChange={(e) => setAge((prev) => ({ ...prev, min: e.target.valueAsNumber }))}
-              value={age.min}
+              min='18'
+              max='120'
+              onChange={(e) => setFilters((prev) => ({ ...prev, age: { ...prev.age, min: e.target.valueAsNumber } }))}
+              value={filters.age.min}
             />
           </div>
           <div>
@@ -98,12 +90,60 @@ const Babysitters = () => {
               id='age_max'
               name='age_max'
               className='mt-1 bs-input w-24'
-              min={18}
-              max={60}
-              onChange={(e) => setAge((prev) => ({ ...prev, max: e.target.valueAsNumber }))}
-              value={age.max}
+              min='18'
+              max='120'
+              onChange={(e) => setFilters((prev) => ({ ...prev, age: { ...prev.age, max: e.target.valueAsNumber } }))}
+              value={filters.age.max}
             />
           </div>
+        </div>
+        <div>
+          <label htmlFor='threeToFive' className='block text-sm font-medium text-gray-700'>
+            Дети от 3-х до 5 лет
+          </label>
+          <select
+            id='threeToFive'
+            name='threeToFive'
+            className='mt-1 block w-full rounded-md border-gray-300 py-2 pl-3 pr-10 text-base focus:border-primary focus:outline-none focus:ring-primborder-primary sm:text-sm'
+            onChange={(e) => setFilters((prev) => ({ ...prev, threeToFive: e.target.value }))}
+            value={filters.threeToFive}
+          >
+            <option>Не выбрано</option>
+            <option value='true'>Да</option>
+            <option value='false'>Нет</option>
+          </select>
+        </div>
+        <div>
+          <label htmlFor='baby' className='block text-sm font-medium text-gray-700'>
+            Работа с грудничками
+          </label>
+          <select
+            id='baby'
+            name='baby'
+            className='mt-1 block w-full rounded-md border-gray-300 py-2 pl-3 pr-10 text-base focus:border-primary focus:outline-none focus:ring-primborder-primary sm:text-sm'
+            onChange={(e) => setFilters((prev) => ({ ...prev, baby: e.target.value }))}
+            value={filters.baby}
+          >
+            <option>Не выбрано</option>
+            <option value='true'>Да</option>
+            <option value='false'>Нет</option>
+          </select>
+        </div>
+        <div>
+          <label htmlFor='detsad' className='block text-sm font-medium text-gray-700'>
+            Работа с детсадовцами
+          </label>
+          <select
+            id='detsad'
+            name='detsad'
+            className='mt-1 block w-full rounded-md border-gray-300 py-2 pl-3 pr-10 text-base focus:border-primary focus:outline-none focus:ring-primborder-primary sm:text-sm'
+            onChange={(e) => setFilters((prev) => ({ ...prev, detsad: e.target.value }))}
+            value={filters.detsad}
+          >
+            <option>Не выбрано</option>
+            <option value='true'>Да</option>
+            <option value='false'>Нет</option>
+          </select>
         </div>
       </div>
       <div className='w-full border-b mt-8' />
