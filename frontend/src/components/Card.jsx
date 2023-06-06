@@ -25,7 +25,7 @@ const Card = ({ person, onBook }) => {
           <div className='flex items-center space-x-3'>
             <h3 className='truncate text-sm font-medium'>{person.full_name}</h3>
             <span className='inline-block flex-shrink-0 rounded-full px-2 py-0.5 text-xs font-medium bg-negative text-white'>
-              {person.years_of_experience} лет опыта
+              Стаж {person.years_of_experience} лет
             </span>
           </div>
           <p className='mt-1 truncate text-sm text-gray-500'>{person.bio}</p>

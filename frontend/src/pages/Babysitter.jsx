@@ -11,6 +11,7 @@ import { AnimatePresence, m } from 'framer-motion';
 import ModalImage from 'react-modal-image';
 import { Fragment, useState } from 'react';
 import Modal from '@/components/Modal';
+import classcat from 'classcat';
 
 const education = ['Высшее', 'Среднее', 'Неоконченное высшее'];
 
@@ -50,7 +51,7 @@ const Babysitter = () => {
         <div className='mt-5 border-t border-gray-200'>
           <dl className='sm:divide-y sm:divide-gray-200'>
             <div className='py-4 sm:grid sm:grid-cols-3 sm:gap-4 sm:py-5'>
-              <dt className='text-sm font-medium text-gray-500'>Опыт работы</dt>
+              <dt className='text-sm font-medium text-gray-500'>Стаж</dt>
               <dd className='mt-1 text-sm text-gray-900 sm:col-span-2 sm:mt-0'>{data?.years_of_experience}</dd>
             </div>
             <div className='py-4 sm:grid sm:grid-cols-3 sm:gap-4 sm:py-5'>
@@ -84,8 +85,15 @@ const Babysitter = () => {
             {reviews && (
               <div className='py-4 sm:grid sm:grid-cols-3 sm:gap-4 sm:py-5'>
                 <dt className='text-sm font-medium text-gray-500'>Средний рейтинг</dt>
-                <dd className='mt-1 text-sm text-gray-900 sm:col-span-2 sm:mt-0'>
-                  {reviews.map((review) => review.rating).reduce((a, b) => a + b, 0) / reviews.length}
+                <dd
+                  className={classcat([
+                    'mt-1 text-sm sm:col-span-2 sm:mt-0',
+                    reviews.length ? 'text-amber-500' : 'text-gray-900',
+                  ])}
+                >
+                  {reviews.length > 0
+                    ? reviews?.map((review) => review.rating).reduce((a, b) => a + b, 0) / reviews.length
+                    : 0}
                 </dd>
               </div>
             )}

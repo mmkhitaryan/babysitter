@@ -41,12 +41,23 @@ const BabysitterForm = ({ data }) => {
         if (!avatar && !file) {
           toast.error('Пожалуйста загрузите аватарку');
         } else {
-          file && uploadAvatar(file);
-          mutate(data, {
-            onSuccess() {
-              navigate('/');
-            },
-          });
+          if (file) {
+            uploadAvatar(file, {
+              onSuccess() {
+                mutate(data, {
+                  onSuccess() {
+                    navigate('/');
+                  },
+                });
+              },
+            });
+          } else {
+            mutate(data, {
+              onSuccess() {
+                navigate('/');
+              },
+            });
+          }
         }
       })}
     >
