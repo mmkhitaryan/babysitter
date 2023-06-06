@@ -32,7 +32,8 @@ ALLOWED_HOSTS = [
     "localhost",
     "127.0.0.1",
     "localhost:3000",
-    "bbak.mkhitaryan.pw"
+    "bbak.mkhitaryan.pw",
+    "lovely-pika-1510ff.netlify.app"
 ]
 from datetime import timedelta
 
@@ -87,9 +88,10 @@ CORS_ALLOWED_ORIGINS = [
     "https://babysitter-react.vercel.app",
     "http://209.38.232.76:8081",
     "http://209.38.232.76",
-    "https://bbak.mkhitaryan.pw"
+    "https://bbak.mkhitaryan.pw",
+    "https://lovely-pika-1510ff.netlify.app"
 ]
-CSRF_TRUSTED_ORIGINS = ['https://bbak.mkhitaryan.pw', 'http://localhost:3000']
+CSRF_TRUSTED_ORIGINS = ['https://bbak.mkhitaryan.pw', 'http://localhost:3000', 'https://lovely-pika-1510ff.netlify.app']
 
 ROOT_URLCONF = 'babysitter.urls'
 
