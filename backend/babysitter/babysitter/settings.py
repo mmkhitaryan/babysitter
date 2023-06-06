@@ -33,7 +33,7 @@ ALLOWED_HOSTS = [
     "127.0.0.1",
     "localhost:3000",
     "bbak.mkhitaryan.pw",
-    "647ed01aecb6e66c3364b0a1--lovely-pika-1510ff.netlify.app"
+    "lovely-pika-1510ff.netlify.app"
 ]
 from datetime import timedelta
 
@@ -89,9 +89,9 @@ CORS_ALLOWED_ORIGINS = [
     "http://209.38.232.76:8081",
     "http://209.38.232.76",
     "https://bbak.mkhitaryan.pw",
-    "https://647ed01aecb6e66c3364b0a1--lovely-pika-1510ff.netlify.app"
+    "https://lovely-pika-1510ff.netlify.app"
 ]
-CSRF_TRUSTED_ORIGINS = ['https://bbak.mkhitaryan.pw', 'http://localhost:3000', 'https://647ed01aecb6e66c3364b0a1--lovely-pika-1510ff.netlify.app']
+CSRF_TRUSTED_ORIGINS = ['https://bbak.mkhitaryan.pw', 'http://localhost:3000', 'https://lovely-pika-1510ff.netlify.app']
 
 ROOT_URLCONF = 'babysitter.urls'
 
