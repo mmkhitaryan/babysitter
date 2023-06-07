@@ -10,7 +10,7 @@ services:
       POSTGRES_USER: 'babysitter'
       POSTGRES_PASSWORD: 'babysitterpass'
       POSTGRES_DB: 'babysitter'
-    expose:
+    ports:
       - "5432"
   web:
     restart: always
