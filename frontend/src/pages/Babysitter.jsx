@@ -12,6 +12,7 @@ import ModalImage from 'react-modal-image';
 import { Fragment, useState } from 'react';
 import Modal from '@/components/Modal';
 import classcat from 'classcat';
+import useBookBabysitter from '@/hooks/useBookBabysitter';
 
 const education = ['Высшее', 'Среднее', 'Неоконченное высшее'];
 
@@ -30,6 +31,7 @@ const Babysitter = () => {
     },
   });
   const [bookModal, setBookModal] = useState(false);
+  const { mutate } = useBookBabysitter();
 
   return (
     <m.main initial={{ opacity: 0 }} animate={{ opacity: 1 }} className='bs-container'>
