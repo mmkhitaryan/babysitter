@@ -19,7 +19,7 @@ const Testimonials = () => {
       <figcaption className='mt-10 flex items-center gap-x-6'>
         <img
           className='h-12 w-12 rounded-full bg-gray-50'
-          src='/avatarka.jpeg'
+          src='/public/ceo.jpeg'
           alt=''
         />
         <div className='text-sm leading-6'>
