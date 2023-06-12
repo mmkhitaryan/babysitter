@@ -1,6 +1,6 @@
 import requests
 
-SWITCH = True
+SWITCH = False
 
 def send_sms(phone, text):
     if SWITCH:
