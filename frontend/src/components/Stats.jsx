@@ -1,8 +1,8 @@
 const stats = [
-  { id: 1, name: 'Няни на платформе', value: '8,000+' },
-  { id: 2, name: 'Единая плата за платформу', value: '3%' },
+  { id: 1, name: 'Количество нянь на платформе', value: '10+' },
+  { id: 2, name: 'Количество семей на платформе', value: '30+' },
   { id: 3, name: 'Гарантия бесперебойной работы', value: '99.9%' },
-  { id: 4, name: 'Выплачено нашим пользователям', value: '$70M' },
+  { id: 4, name: 'Довольные клиеты:', value: '40+' },
 ];
 
 const Stats = () => {
@@ -10,10 +10,7 @@ const Stats = () => {
     <div className='bs-container'>
       <div className='mx-auto max-w-2xl lg:max-w-none'>
         <div className='text-center'>
-          <h2 className='text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl'>Доверие семей по всему миру</h2>
-          <p className='mt-4 text-lg leading-8 text-gray-600'>
-            Lorem ipsum dolor sit amet consect adipisicing possimus.
-          </p>
+          <h2 className='text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl'>Статистика нашего сервиса:</h2>
         </div>
         <dl className='mt-16 grid grid-cols-1 gap-0.5 overflow-hidden rounded-2xl text-center sm:grid-cols-2 lg:grid-cols-4'>
           {stats.map((stat) => (
